@@ -1,0 +1,78 @@
+# =============================================================================
+# Candidate Profile & Matching Preferences Configuration
+# Copy this file to config/profile.yaml and customize with your details.
+# =============================================================================
+
+candidate:
+  name: "Your Name"
+  email: "your-email@example.com"
+  current_title: "Full Stack / Frontend Engineer"
+  years_of_experience: 5
+  linkedin: "https://linkedin.com/in/your-profile"
+  github: "https://github.com/your-username"
+
+target_roles:
+  - Software Engineer
+  - Full Stack Engineer
+  - Frontend Engineer
+  - Senior Frontend Engineer
+
+locations:
+  preferred:
+    - Remote
+    - Bengaluru, India
+    - Hyderabad, India
+    - Pune, India
+    - Noida, India
+    - Gurgaon, India
+    - Chennai, India
+  remote_only: false
+  allow_hybrid: true
+
+salary:
+  currency: USD  # or INR, EUR, etc.
+  min_target: 100000
+
+skills:
+  core:
+    - JavaScript
+    - TypeScript
+    - React
+    - Node.js
+    - Python
+    - PostgreSQL
+    - REST API
+    - Git
+  secondary:
+    - Redis
+    - Kubernetes
+    - GraphQL
+    - CI/CD
+    - Linux
+    - Docker
+    - Next.js
+    - Tailwind
+
+omit_skills:
+  - PHP
+  - Ruby on Rails
+  - WordPress
+  - Salesforce
+  - COBOL
+  - Perl
+  - Flash
+  - Manual QA
+
+exclusions:
+  titles:
+    - Director
+    - VP
+    - Vice President
+    - Principal
+    - Staff
+    - Manager
+    - Intern
+    - Internship
+    - Sales
+    - Recruiter
+  companies: []

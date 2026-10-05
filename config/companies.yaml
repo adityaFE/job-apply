@@ -1,0 +1,227 @@
+# Target companies to monitor across direct ATS platforms
+# Supported ATS types: 'greenhouse', 'lever', 'ashby'
+
+companies:
+  # ===========================================================================
+  # 🇮🇳 Indian Tech Unicorns & Startups
+  # ===========================================================================
+  - name: "Razorpay"
+    ats: "greenhouse"
+    slug: "razorpaysoftwareprivatelimited"
+
+  - name: "Meesho"
+    ats: "lever"
+    slug: "meesho"
+
+  - name: "Paytm"
+    ats: "lever"
+    slug: "paytm"
+
+  - name: "CRED"
+    ats: "lever"
+    slug: "cred"
+
+  - name: "InMobi"
+    ats: "greenhouse"
+    slug: "inmobi"
+
+  - name: "Glance"
+    ats: "greenhouse"
+    slug: "glance"
+
+  - name: "Zeta"
+    ats: "lever"
+    slug: "zeta"
+
+  - name: "Thoughtworks"
+    ats: "greenhouse"
+    slug: "thoughtworks"
+
+  - name: "Pocket FM"
+    ats: "lever"
+    slug: "pocketfm"
+
+  # ===========================================================================
+  # 🏢 Global Capability Centers (GCCs) & Enterprise Tech in India
+  # ===========================================================================
+  - name: "Zscaler"
+    ats: "greenhouse"
+    slug: "zscaler"
+
+  - name: "Pure Storage"
+    ats: "greenhouse"
+    slug: "purestorage"
+
+  - name: "Rubrik"
+    ats: "greenhouse"
+    slug: "rubrik"
+
+  - name: "Okta"
+    ats: "greenhouse"
+    slug: "okta"
+
+  - name: "Toast"
+    ats: "greenhouse"
+    slug: "toast"
+
+  - name: "Netskope"
+    ats: "greenhouse"
+    slug: "netskope"
+
+  - name: "Elastic"
+    ats: "greenhouse"
+    slug: "elastic"
+
+  - name: "MongoDB"
+    ats: "greenhouse"
+    slug: "mongodb"
+
+  - name: "PagerDuty"
+    ats: "greenhouse"
+    slug: "pagerduty"
+
+  - name: "Druva"
+    ats: "greenhouse"
+    slug: "druva"
+
+  - name: "AlphaSense"
+    ats: "greenhouse"
+    slug: "alphasense"
+
+  # ===========================================================================
+  # 🌐 Top Remote-First Global Companies
+  # ===========================================================================
+  - name: "GitLab"
+    ats: "greenhouse"
+    slug: "gitlab"
+
+  - name: "Supabase"
+    ats: "ashby"
+    slug: "supabase"
+
+  - name: "Cursor"
+    ats: "ashby"
+    slug: "cursor"
+
+  - name: "Perplexity"
+    ats: "ashby"
+    slug: "perplexity"
+
+  - name: "Twilio"
+    ats: "greenhouse"
+    slug: "twilio"
+
+  - name: "Vercel"
+    ats: "greenhouse"
+    slug: "vercel"
+
+  - name: "Sentry"
+    ats: "ashby"
+    slug: "sentry"
+
+  - name: "Affirm"
+    ats: "greenhouse"
+    slug: "affirm"
+
+  - name: "Datadog"
+    ats: "greenhouse"
+    slug: "datadog"
+
+  - name: "Hopper"
+    ats: "ashby"
+    slug: "hopper"
+
+  - name: "Weave"
+    ats: "greenhouse"
+    slug: "weave"
+
+  - name: "Bloomreach"
+    ats: "greenhouse"
+    slug: "bloomreach"
+
+  - name: "Coursera"
+    ats: "greenhouse"
+    slug: "coursera"
+
+  - name: "HighLevel"
+    ats: "lever"
+    slug: "gohighlevel"
+
+  - name: "Confluent"
+    ats: "ashby"
+    slug: "confluent"
+
+  - name: "Fivetran"
+    ats: "greenhouse"
+    slug: "fivetran"
+
+  - name: "Cloudflare"
+    ats: "greenhouse"
+    slug: "cloudflare"
+
+  - name: "Globalization Partners"
+    ats: "greenhouse"
+    slug: "globalizationpartners"
+
+  # ===========================================================================
+  # 🚀 US Tech & AI Companies (Selective)
+  # ===========================================================================
+  - name: "OpenAI"
+    ats: "ashby"
+    slug: "openai"
+
+  - name: "Anthropic"
+    ats: "ashby"
+    slug: "anthropic"
+
+  - name: "Stripe"
+    ats: "greenhouse"
+    slug: "stripe"
+
+  - name: "Figma"
+    ats: "greenhouse"
+    slug: "figma"
+
+  - name: "Coinbase"
+    ats: "greenhouse"
+    slug: "coinbase"
+
+  - name: "Linear"
+    ats: "ashby"
+    slug: "linear"
+
+  - name: "Reddit"
+    ats: "greenhouse"
+    slug: "reddit"
+
+  - name: "Discord"
+    ats: "greenhouse"
+    slug: "discord"
+
+  - name: "Airbnb"
+    ats: "greenhouse"
+    slug: "airbnb"
+
+  - name: "Pinterest"
+    ats: "greenhouse"
+    slug: "pinterest"
+
+  - name: "Palantir"
+    ats: "lever"
+    slug: "palantir"
+
+  - name: "Spotify"
+    ats: "lever"
+    slug: "spotify"
+
+  - name: "Databricks"
+    ats: "greenhouse"
+    slug: "databricks"
+
+  - name: "Coupang"
+    ats: "greenhouse"
+    slug: "coupang"
+
+  - name: "LinkedIn"
+    ats: "lever"
+    slug: "linkedin"

@@ -1,0 +1,30 @@
+app:
+  name: "Job Apply Intelligence Hub"
+  host: "127.0.0.1"
+  port: 8000
+  debug: true
+
+database:
+  path: "data/jobs.db"
+
+scraping:
+  max_workers: 8
+  request_timeout_seconds: 15
+  retry_count: 2
+  rate_limit_delay_seconds: 0.5
+  enable_aggregators: true
+  aggregator_sources:
+    - "linkedin"
+    - "indeed"
+
+matching:
+  min_match_score: 50
+  weights:
+    title_match: 0.35
+    core_skills: 0.40
+    secondary_skills: 0.15
+    location_match: 0.10
+  omit_skill_penalty: 30  # Subtracted from match score if an omitted skill is found
+
+filters:
+  default_days_back: 14  # Only show jobs posted within last N days by default

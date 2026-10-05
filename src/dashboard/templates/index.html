@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Job Apply Intelligence Hub</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <!-- Header / Navigation -->
+  <header class="app-header">
+    <div class="header-container">
+      <div class="brand">
+        <div class="brand-icon">⚡</div>
+        <div>
+          <h1>Job Apply Intelligence Hub</h1>
+          <p class="subtitle">Direct ATS Scraping • AI Scoring • 1-Click Apply • Local Email Tracking</p>
+        </div>
+      </div>
+      <div class="header-actions">
+        <button id="btn-sync-emails" class="btn btn-secondary">
+          <span class="btn-icon">📧</span>
+          <span id="email-sync-btn-text">Sync Emails</span>
+        </button>
+        <button id="btn-email-config" class="btn btn-secondary">
+          ⚙️ Email Setup
+        </button>
+        <button id="btn-linkedin-search" class="btn btn-secondary">
+          🔍 LinkedIn Search
+        </button>
+        <button id="btn-profile-config" class="btn btn-secondary">
+          ⚙️ Profile & Skills
+        </button>
+        <button id="btn-scrape-all" class="btn btn-primary">
+          <span class="btn-icon">🔄</span>
+          <span id="scrape-btn-text">Sync & Scrape All</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="main-container">
+    <!-- Analytics / Stats Row -->
+    <section class="stats-row">
+      <div class="stat-card" data-status="ALL">
+        <div class="stat-label">Total Discovered</div>
+        <div class="stat-value" id="stat-total">0</div>
+        <div class="stat-sub">Across all sources</div>
+      </div>
+      <div class="stat-card active-stat" data-status="NEW">
+        <div class="stat-label">New Matches</div>
+        <div class="stat-value text-blue" id="stat-new">0</div>
+        <div class="stat-sub">Ready for review</div>
+      </div>
+      <div class="stat-card" data-status="SAVED">
+        <div class="stat-label">Saved</div>
+        <div class="stat-value text-purple" id="stat-saved">0</div>
+        <div class="stat-sub">Bookmarked</div>
+      </div>
+      <div class="stat-card" data-status="APPLIED">
+        <div class="stat-label">Applied</div>
+        <div class="stat-value text-green" id="stat-applied">0</div>
+        <div class="stat-sub">Applications sent</div>
+      </div>
+      <div class="stat-card" data-status="INTERVIEW">
+        <div class="stat-label">In Interview</div>
+        <div class="stat-value text-amber" id="stat-interview">0</div>
+        <div class="stat-sub">Active processes</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Tracked Emails</div>
+        <div class="stat-value text-cyan" id="stat-emails">0</div>
+        <div class="stat-sub" id="stat-remote-pct">0% Remote</div>
+      </div>
+    </section>
+
+    <!-- Filter Control Center -->
+    <section class="filter-panel">
+      <!-- Search & Quick Filters Bar -->
+      <div class="filter-top-row">
+        <div class="search-box">
+          <span class="search-icon">🔍</span>
+          <input type="text" id="search-input" placeholder="Search by job title, company, or keywords..." />
+        </div>
+
+        <div class="quick-select-group">
+          <!-- Date Filter -->
+          <div class="select-wrapper">
+            <label for="filter-date">📅 Date Posted</label>
+            <select id="filter-date">
+              <option value="" selected>Any Time</option>
+              <option value="1">Last 24 Hours</option>
+              <option value="3">Last 3 Days</option>
+              <option value="7">Last 7 Days</option>
+              <option value="14">Last 14 Days</option>
+              <option value="30">Last 30 Days</option>
+            </select>
+          </div>
+
+          <!-- Min Match Score -->
+          <div class="select-wrapper">
+            <label for="filter-min-score">🎯 Min Match Score</label>
+            <select id="filter-min-score">
+              <option value="0" selected>All Scores (0%+)</option>
+              <option value="30">Low+ (30%+)</option>
+              <option value="50">Medium+ (50%+)</option>
+              <option value="70">High Match (70%+)</option>
+              <option value="85">Top Match (85%+)</option>
+            </select>
+          </div>
+
+          <!-- Sort By -->
+          <div class="select-wrapper">
+            <label for="filter-sort">↕️ Sort By</label>
+            <select id="filter-sort">
+              <option value="match_score">Highest Match Score</option>
+              <option value="date_posted">Newest Posted</option>
+              <option value="date_discovered">Newest Discovered</option>
+              <option value="company">Company Name</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- Advanced Skills, Omit Skills & Location Filters -->
+      <div class="filter-advanced-row">
+        <!-- Required Skills -->
+        <div class="filter-field">
+          <label>
+            <span>✅ Must Include Skills</span>
+            <small class="helper-text">(comma-separated or click pills)</small>
+          </label>
+          <input type="text" id="filter-skills-input" placeholder="e.g. Python, FastAPI, React, Docker" />
+          <div class="quick-pills" id="quick-skills-pills"></div>
+        </div>
+
+        <!-- Omit Skills (Negative Filter) -->
+        <div class="filter-field">
+          <label>
+            <span class="text-danger">🚫 Omit / Exclude Skills</span>
+            <small class="helper-text">(hide jobs requiring these)</small>
+          </label>
+          <input type="text" id="filter-omit-skills-input" placeholder="e.g. PHP, WordPress, Ruby, Salesforce" />
+          <div class="quick-pills" id="quick-omit-pills"></div>
+        </div>
+
+        <!-- Location & Remote Toggle -->
+        <div class="filter-field loc-field">
+          <label>📍 Location & Work Mode</label>
+          <div class="loc-input-group">
+            <input type="text" id="filter-location-input" placeholder="e.g. Remote, San Francisco, New York" />
+            <label class="toggle-label">
+              <input type="checkbox" id="filter-remote-toggle" />
+              <span>Remote Only</span>
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Active Filters Bar & Reset -->
+      <div class="filter-footer">
+        <div class="status-tab-group" id="status-tabs">
+          <button class="tab-btn active" data-status="ALL">All Jobs (<span id="count-tab-all">0</span>)</button>
+          <button class="tab-btn" data-status="NEW">New (<span id="count-tab-new">0</span>)</button>
+          <button class="tab-btn" data-status="SAVED">Saved (<span id="count-tab-saved">0</span>)</button>
+          <button class="tab-btn" data-status="APPLIED">Applied (<span id="count-tab-applied">0</span>)</button>
+          <button class="tab-btn" data-status="INTERVIEW">Interview (<span id="count-tab-interview">0</span>)</button>
+          <button class="tab-btn" data-status="ARCHIVED">Archived</button>
+        </div>
+        <button id="btn-reset-filters" class="btn btn-text">Reset Filters ✕</button>
+      </div>
+    </section>
+
+    <!-- Job Results Section -->
+    <section class="results-section">
+      <div class="results-header">
+        <h2 id="results-count-heading">Showing 0 matching jobs</h2>
+        <div class="view-toggles">
+          <span id="sync-status" class="sync-status-indicator"></span>
+        </div>
+      </div>
+
+      <!-- Job Cards Grid -->
+      <div class="job-cards-grid" id="jobs-container">
+        <!-- Dynamic Cards rendered via JS -->
+      </div>
+
+      <!-- Empty State -->
+      <div class="empty-state" id="empty-state" style="display: none;">
+        <div class="empty-icon">📂</div>
+        <h3>No jobs found matching your criteria</h3>
+        <p>Try clearing some filters, reducing the minimum match score, or clicking "Sync & Scrape All".</p>
+        <button id="btn-empty-scrape" class="btn btn-primary">Sync All ATS Portals Now</button>
+      </div>
+    </section>
+  </main>
+
+  <!-- Job Detail Modal -->
+  <div class="modal-backdrop" id="job-detail-modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div>
+          <span class="badge badge-source" id="modal-source-badge">Greenhouse</span>
+          <h2 id="modal-job-title">Senior Software Engineer</h2>
+          <div class="modal-company-line">
+            <strong id="modal-company-name">Stripe</strong> •
+            <span id="modal-location">San Francisco, CA</span>
+          </div>
+        </div>
+        <button class="btn-close" id="modal-close-btn">✕</button>
+      </div>
+
+      <div class="modal-body">
+        <!-- Match Breakdown Box -->
+        <div class="match-breakdown-box">
+          <div class="match-score-large" id="modal-score-badge">92% Match</div>
+          <div class="match-details">
+            <div class="match-summary-line" id="modal-match-summary"></div>
+            <div class="skills-tag-group">
+              <strong>Matched Skills:</strong>
+              <div id="modal-matched-skills" class="tag-list"></div>
+            </div>
+            <div class="skills-tag-group">
+              <strong>Missing Skills:</strong>
+              <div id="modal-missing-skills" class="tag-list"></div>
+            </div>
+            <div id="modal-omitted-warning" class="omitted-warning" style="display: none;"></div>
+          </div>
+        </div>
+
+        <!-- Application Timeline & Email History Section -->
+        <div class="modal-timeline-section">
+          <h3>📋 Application History & Email Trail</h3>
+          <div id="modal-timeline-container" class="timeline-container">
+            <div class="timeline-empty">No status updates or emails recorded yet.</div>
+          </div>
+        </div>
+
+        <!-- Notes Section -->
+        <div class="modal-notes-section">
+          <label for="modal-notes-input"><strong>Application Notes:</strong></label>
+          <textarea id="modal-notes-input" placeholder="Add custom notes, recruiter contacts, or referral details..."></textarea>
+          <button id="btn-save-notes" class="btn btn-secondary btn-sm">Save Notes</button>
+        </div>
+
+        <!-- Job Description -->
+        <div class="modal-desc-section">
+          <h3>Full Job Description</h3>
+          <div id="modal-job-description" class="job-desc-content"></div>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <div class="modal-status-actions">
+          <label>Status:</label>
+          <select id="modal-status-select">
+            <option value="NEW">New</option>
+            <option value="SAVED">Saved</option>
+            <option value="APPLIED">Applied</option>
+            <option value="INTERVIEW">Interview</option>
+            <option value="OFFER">Offer</option>
+            <option value="REJECTED">Rejected</option>
+            <option value="ARCHIVED">Archived</option>
+          </select>
+        </div>
+        <a id="modal-apply-btn" href="#" target="_blank" class="btn btn-primary btn-lg">
+          Apply on Company Site ↗
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Email Tracking Configuration Modal -->
+  <div class="modal-backdrop" id="email-modal">
+    <div class="modal-content modal-md">
+      <div class="modal-header">
+        <h2>⚙️ Local Email Tracking (IMAP)</h2>
+        <button class="btn-close" id="email-modal-close">✕</button>
+      </div>
+      <div class="modal-body">
+        <div class="info-alert">
+          🔒 <strong>100% Local Processing:</strong> Your email credentials and messages are processed entirely on your local machine and stored in your local SQLite database. For Gmail, use an <strong>App Password</strong> with 2FA enabled.
+        </div>
+
+        <div class="form-group">
+          <label class="toggle-label">
+            <input type="checkbox" id="email-cfg-enabled" />
+            <span><strong>Enable Local Email Tracking</strong></span>
+          </label>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group flex-1">
+            <label>IMAP Server Host:</label>
+            <input type="text" id="email-cfg-host" placeholder="imap.gmail.com" />
+          </div>
+          <div class="form-group" style="width: 110px;">
+            <label>Port:</label>
+            <input type="number" id="email-cfg-port" placeholder="993" />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Email Address / Username:</label>
+          <input type="email" id="email-cfg-username" placeholder="your.name@gmail.com" />
+        </div>
+
+        <div class="form-group">
+          <label>App Password / IMAP Password:</label>
+          <input type="password" id="email-cfg-password" placeholder="••••••••••••••••" />
+          <small class="helper-text">Leave blank to keep existing saved password.</small>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group flex-1">
+            <label>Lookback Window:</label>
+            <select id="email-cfg-lookback">
+              <option value="7">Last 7 Days</option>
+              <option value="14">Last 14 Days</option>
+              <option value="30" selected>Last 30 Days</option>
+              <option value="60">Last 60 Days</option>
+              <option value="90">Last 90 Days</option>
+            </select>
+          </div>
+          <div class="form-group flex-1">
+            <label>IMAP Folders (comma-separated):</label>
+            <input type="text" id="email-cfg-folders" value="INBOX, [Gmail]/All Mail" />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="toggle-label">
+            <input type="checkbox" id="email-cfg-auto-status" checked />
+            <span>Auto-transition job status when confirmations, interviews, or rejections are detected</span>
+          </label>
+        </div>
+
+        <div id="email-test-status" class="test-status-box" style="display: none;"></div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" id="email-test-btn">🔌 Test Connection</button>
+        <button class="btn btn-secondary" id="email-cancel-btn">Cancel</button>
+        <button class="btn btn-primary" id="email-save-btn">Save Settings</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Profile & Skills Configuration Modal -->
+  <div class="modal-backdrop" id="profile-modal">
+    <div class="modal-content modal-md">
+      <div class="modal-header">
+        <h2>⚙️ Profile & Matching Settings</h2>
+        <button class="btn-close" id="profile-modal-close">✕</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label>Target Job Titles (one per line):</label>
+          <textarea id="cfg-target-roles" rows="4"></textarea>
+        </div>
+        <div class="form-group">
+          <label>Core Skills (comma-separated):</label>
+          <input type="text" id="cfg-core-skills" />
+        </div>
+        <div class="form-group">
+          <label>Secondary Skills (comma-separated):</label>
+          <input type="text" id="cfg-secondary-skills" />
+        </div>
+        <div class="form-group">
+          <label class="text-danger">Omit Skills / Negative Keywords (comma-separated):</label>
+          <input type="text" id="cfg-omit-skills" />
+        </div>
+        <div class="form-group">
+          <label>Preferred Locations (comma-separated):</label>
+          <input type="text" id="cfg-locations" />
+        </div>
+        <div class="form-group">
+          <label class="toggle-label">
+            <input type="checkbox" id="cfg-remote-only" />
+            <span>Remote Only Preference</span>
+          </label>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" id="profile-cancel-btn">Cancel</button>
+        <button class="btn btn-primary" id="profile-save-btn">Save & Re-evaluate Matches</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- LinkedIn Guest Search Modal -->
+  <div class="modal-backdrop" id="linkedin-modal">
+    <div class="modal-content modal-sm">
+      <div class="modal-header">
+        <h2>🔍 LinkedIn Public Job Search</h2>
+        <button class="btn-close" id="linkedin-modal-close">✕</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label>Keywords / Job Title:</label>
+          <input type="text" id="li-search-keywords" value="Software Engineer" />
+        </div>
+        <div class="form-group">
+          <label>Location:</label>
+          <input type="text" id="li-search-location" value="Remote" />
+        </div>
+        <div class="form-group">
+          <label>Number of Jobs to fetch:</label>
+          <select id="li-search-limit">
+            <option value="15">15 listings</option>
+            <option value="25" selected>25 listings</option>
+            <option value="50">50 listings</option>
+          </select>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" id="li-cancel-btn">Cancel</button>
+        <button class="btn btn-primary" id="li-run-btn">Search & Ingest</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div id="toast-container" class="toast-container"></div>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>
